@@ -23,7 +23,7 @@ export const clerkWebhooks = async (req,res)=>{
                     imageUrl: data.image_Url,
                 }
                 await User.create(userData)
-                res.JSON({})
+                res.json({})
                 break;
             }
             case 'user.updated': {
