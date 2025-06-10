@@ -1,9 +1,9 @@
 import { Webhook } from "svix";
 import User from "../models/User.js";
 
-//
+//api controller function to manageclerk user wuth db
 
-const clerkWebhooks = async (req,res)=>{
+export const clerkWebhooks = async (req,res)=>{
     try{
         const whook = new Webhook(process.env.CLERK_WEBHOOK_SECRET)
 
@@ -32,7 +32,7 @@ const clerkWebhooks = async (req,res)=>{
                     name: data.first_name + " " + data.last_name,
                     imageUrl: data.image_Url,
                 }
-                await User.findByIdAndUpdate(data.id,userData)
+                await User.findByIdAndUpdate(data.id, userData)
                 res.json({})
                 break;
             }
@@ -51,4 +51,3 @@ const clerkWebhooks = async (req,res)=>{
             res.json({success: false, message: error.message})
     }
 }
-export { clerkWebhooks };
