@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "server": "nodemon server.js",
-    "start": "nodemon app.js"
+    "start": "node server.js"
   },
   "keywords": [],
   "author": "",
@@ -13,7 +13,6 @@
   "description": "",
   "dependencies": {
     "@clerk/express": "^1.6.0",
-    "@ngrok/ngrok": "^1.5.1",
     "cloudinary": "^2.6.1",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
