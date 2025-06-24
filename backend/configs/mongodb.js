@@ -7,3 +7,5 @@ const connectDB = async () => {
 
     await mongoose.connect(`${process.env.MONGODB_URI}/edura`)
 }
+
+export default connectDB;
