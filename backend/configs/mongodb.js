@@ -1,15 +1,11 @@
 import mongoose from "mongoose";
 
-const connectDB = async () => {
-  if (mongoose.connection.readyState >= 1) return; // reuse existing connection
 
-  try {
-    await mongoose.connect(process.env.MONGODB_URI);
-    console.log("✅ Database Connected");
-  } catch (error) {
-    console.error("❌ MongoDB connection error:", error);
-    throw error;
-  }
-};
+// connect tothe mongoDB db
+const connectDB = async ()=>{
+    mongoose.connection.on('Connected',()=> console.log('Database Connected'))
 
-export default connectDB;
+    await mongoose.connect(`${process.env.MONGODB_URI}/edura`)
+}
+
+export default connectDB
