@@ -6,23 +6,24 @@ import { clerkWebhooks } from "./controllers/webhooks.js";
 
 const app = express();
 
-// ✅ Connect to MongoDB
+// Connect to MongoDB
 await connectDB();
 
-// ✅ CORS Middleware
+// Middlewares
 app.use(cors());
 
-// ✅ Webhook must come BEFORE express.json()
-app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
+// Webhook: use express.raw() only for this route
+app.post("/api/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
+// Use express.json() for all other routes
+app.use(express.json());
 
+// Test routes
+app.get("/", (req, res) => res.send("API is working"));
+app.get("/ping", (req, res) => res.json({ pong: true }));
 
-// ✅ Other routes
-app.get("/", (req, res) => res.send("API Working"));
-
-
-// ✅ Start Server
+// Start server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+  console.log(`🚀 Server running on port ${PORT}`);
 });
