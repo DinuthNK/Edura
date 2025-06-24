@@ -19,7 +19,7 @@ app.use(express.json());
 app.get('/', (req, res) => res.send("API Working"));
 
 import { clerkWebhooks } from "./controllers/webhooks.js";
-app.post('controllers/webhooks', clerkWebhooks);
+app.post('/api/webhooks/clerk', clerkWebhooks);
 
 //port
 const PORT = process.env.PORT || 5000;
