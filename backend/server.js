@@ -13,7 +13,7 @@ await connectDB();
 app.use(cors());
 
 // ✅ Webhook must come BEFORE express.json()
-app.post("/api/webhooks/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
+app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
 // ✅ Standard middleware (used for all other routes)
 app.use(express.json());
