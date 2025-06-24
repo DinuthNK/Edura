@@ -1,19 +1,22 @@
-import express from "express";
-import cors from "cors";
-import "dotenv/config";
-import connectDB from "./configs/mongodb.js";
-import { clerkWebhooks } from "./controllers/webhooks.js";
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import connectDB from './configs/mongodb.js';
+import { clerkWebhooks } from './controllers/webhooks.js';
 
 const app = express();
 
 await connectDB();
 
 app.use(cors());
-app.use(express.json()); // JSON body parser globally
 
-app.get("/", (req, res) => res.send("API Working"));
+// This is CRUCIAL so req.body is populated correctly
+app.use(express.json());
 
-app.post("/clerk", clerkWebhooks);
+app.get('/', (req, res) => res.send('API Working'));
+
+// Clerk webhook route
+app.post('/clerk', clerkWebhooks);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
