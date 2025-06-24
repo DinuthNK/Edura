@@ -6,16 +6,16 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     imageUrl: { type: String, default: "" },
-    enrolledCourse: [
+    enrolledCourses: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Course",
       },
     ],
   },
-  { timestamps: true, collection: "userdata" }
+  { timestamps: true}
 );
 
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User = mongoose.model('User', userSchema);
 
 export default User;
