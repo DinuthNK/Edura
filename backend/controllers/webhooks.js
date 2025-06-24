@@ -5,16 +5,15 @@ export const clerkWebhooks = async (req, res) => {
   console.log("📩 Clerk webhook received");
 
   try {
-    // Verify the raw webhook payload
     const wh = new Webhook(process.env.CLERK_WEBHOOK_SECRET);
     const evt = wh.verify(req.body, {
       "svix-id": req.headers["svix-id"],
       "svix-timestamp": req.headers["svix-timestamp"],
-      "svix-signature": req.headers["svix-signature"],
+      "svix-signature": req.headers["svix-signature"]
     });
 
     const { type, data } = evt;
-    console.log("✅ Event type:", type);
+    console.log("✅ Webhook type:", type);
 
     switch (type) {
       case "user.created": {
@@ -24,7 +23,6 @@ export const clerkWebhooks = async (req, res) => {
           name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
           imageUrl: data.image_url || "",
         };
-
         await User.create(userData);
         console.log("💾 User created:", userData);
         break;
@@ -36,7 +34,6 @@ export const clerkWebhooks = async (req, res) => {
           name: `${data.first_name || ""} ${data.last_name || ""}`.trim(),
           imageUrl: data.image_url || "",
         };
-
         await User.findByIdAndUpdate(data.id, updateData);
         console.log("🔁 User updated:", data.id);
         break;
@@ -50,12 +47,11 @@ export const clerkWebhooks = async (req, res) => {
 
       default:
         console.log("ℹ️ Unhandled event type:", type);
-        break;
     }
 
-    return res.status(200).json({ success: true });
+    res.status(200).json({ success: true });
   } catch (error) {
     console.error("❌ Webhook error:", error.message);
-    return res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message });
   }
 };
