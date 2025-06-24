@@ -13,13 +13,10 @@ await connectDB()
 
 // Middlewares
 app.use(cors())
-app.use(express.json());
 
 // Routes
 app.get('/', (req, res) => res.send("API Working"));
 
-import { clerkWebhooks } from "./controllers/webhooks.js";
-app.post('/api/webhooks/clerk', clerkWebhooks);
 
 //port
 const PORT = process.env.PORT || 5000;
