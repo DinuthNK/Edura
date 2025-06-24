@@ -15,14 +15,11 @@ app.use(cors());
 // ✅ Webhook must come BEFORE express.json()
 app.post("/clerk", express.raw({ type: "application/json" }), clerkWebhooks);
 
-// ✅ Standard middleware (used for all other routes)
-app.use(express.json());
+
 
 // ✅ Other routes
 app.get("/", (req, res) => res.send("API Working"));
 
-// ✅ Optional test route to confirm server is live
-app.get("/ping", (req, res) => res.json({ pong: true }));
 
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
