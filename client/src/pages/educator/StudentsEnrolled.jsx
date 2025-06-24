@@ -2,59 +2,59 @@ import React, { useEffect, useState } from 'react'
 import { dummyStudentEnrolled } from '../../assets/assets'
 import Loading from '../../components/student/Loading'
 
-
 const StudentsEnrolled = () => {
-
   const [enrolledStudents, setEnrolledstudents] = useState(null)
 
   const fetchEnrolledstudents = async () => {
     setEnrolledstudents(dummyStudentEnrolled)
   }
 
-    useEffect(() => {
-      fetchEnrolledstudents()
-    }, [])
+  useEffect(() => {
+    fetchEnrolledstudents()
+  }, [])
 
-  return enrolledStudents ?  (
-    <div className='min-h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0'>
-      <div className='flex flex-col items-center max-w-4xl w-full overflow-hidden 
-      rounded-md bg-white border border-gray-500/20'>
-        <table className='table-fixed md:table-auto w-full overflow-hidden pb-4'>
-          <thead className='text-gray-900 border-b border-gray-500/20 text-sm text-left'>
+  return enrolledStudents ? (
+    <div className='min-h-screen flex flex-col items-start justify-between md:p-10 p-6 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-200'>
+      <div className='max-w-5xl w-full mx-auto overflow-hidden rounded-xl bg-white border border-purple-300 shadow-lg'>
+        <table className='w-full table-fixed md:table-auto'>
+          <thead className='text-purple-900 border-b border-purple-300 text-sm text-left'>
             <tr>
-              <th className='px-4 py-3 font-semibold text-center hidden sm:table-cell'>#</th>
-              <th className='px-4 py-3 font-semibold text-center hidden sm:table-cell'>Student Name</th>
-              <th className='px-4 py-3 font-semibold text-center hidden sm:table-cell'>Course Title</th>
-              <th className='px-4 py-3 font-semibold text-center hidden sm:table-cell'>Date</th>
+              <th className='px-6 py-4 font-semibold text-center hidden sm:table-cell'>No.</th>
+              <th className='px-6 py-4 font-semibold text-center hidden sm:table-cell'>Learner</th>
+              <th className='px-6 py-4 font-semibold text-center hidden sm:table-cell'>Enrolled Course</th>
+              <th className='px-6 py-4 font-semibold text-center hidden sm:table-cell'>Enrollment Date</th>
             </tr>
           </thead>
-          <tbody>
-  {enrolledStudents.map((item, index) => (
-    <tr key={index} className="border-b border-gray-500/20">
-      <td className="px-4 py-3 text-center hidden sm:table-cell">
-        {index + 1}
-      </td>
-      <td className="md:px-4 px-2 py-3 flex items-center space-x-3">
-        <img
-          src={item.student.imageUrl}
-          alt=""
-          className="w-9 h-9 rounded-full"
-        />
-        <span className="truncate">{item.student.name}</span>
-      </td>
-      <td className="px-4 py-3 truncate">{item.courseTitle}</td>
-      <td className="px-4 py-3 hidden sm:table-cell">
-        {new Date(item.purchaseDate).toLocaleDateString()}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
-
+          <tbody className='text-purple-700 text-sm'>
+            {enrolledStudents.map((item, index) => (
+              <tr
+                key={index}
+                className='border-b border-purple-200 hover:bg-purple-50 transition-colors duration-200'
+              >
+                <td className='px-6 py-4 text-center hidden sm:table-cell font-mono'>
+                  {index + 1}
+                </td>
+                <td className='md:px-6 px-3 py-4 flex items-center space-x-4'>
+                  <img
+                    src={item.student.imageUrl}
+                    alt={`${item.student.name} avatar`}
+                    className='w-10 h-10 rounded-full border-2 border-purple-300'
+                  />
+                  <span className='truncate font-semibold'>{item.student.name}</span>
+                </td>
+                <td className='px-6 py-4 truncate font-medium'>{item.courseTitle}</td>
+                <td className='px-6 py-4 text-center hidden sm:table-cell'>
+                  {new Date(item.purchaseDate).toLocaleDateString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </table>
       </div>
     </div>
-  ) : <Loading/>
+  ) : (
+    <Loading />
+  )
 }
 
 export default StudentsEnrolled

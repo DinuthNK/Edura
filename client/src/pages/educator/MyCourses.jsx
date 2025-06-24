@@ -8,7 +8,6 @@ const MyCourses = () => {
 
   const [courses, setCourses] = useState(null)
   const fetchEducatorCourses = async() => {
-
     setCourses(allCourses)
   }
 
@@ -17,49 +16,51 @@ const MyCourses = () => {
   }, [])
 
   return  courses ? (
-    <div className='h-screen flex flex-col items-start justify-between md:p-8 md:pb-0 p-4 pt-8 pb-0'>
-      <div className='w-full'>
-        <h2 className="pb-4 text-lg font-medium">My Courses</h2>
-        <div className='flex flex-col items-center max-w-4xl w-full overflow-hidden rounded-md
-         bg-white border border-gray-500/20'>
-          <table className='md:table-auto table-fixed w-full overflow-hidden'>
-            <thead className="text-gray-900 border-b border-gray-500/20 text-sm text-left">
+    <div className='min-h-screen flex flex-col items-start justify-between md:p-10 p-6 bg-gradient-to-br from-purple-50 via-purple-100 to-purple-200'>
+      <div className='w-full max-w-6xl mx-auto'>
+        <h2 className="pb-6 text-2xl font-bold text-purple-800 border-b border-purple-300 mb-6">
+          My Courses
+        </h2>
+
+        <div className='overflow-x-auto bg-white rounded-xl border border-purple-300 shadow-lg'>
+          <table className='w-full table-fixed md:table-auto'>
+            <thead className="text-purple-900 border-b border-purple-300 text-sm text-left">
               <tr>
-                <th className='px-4 py-3 font-semibold truncate'>All courses</th>
-                <th className='px-4 py-3 font-semibold truncate'>Earnings</th>
-                <th className='px-4 py-3 font-semibold truncate'>Students</th>
-                <th className='px-4 py-3 font-semibold truncate'>Published On</th>
+                <th className='px-6 py-4 font-semibold truncate'>All courses</th>
+                <th className='px-6 py-4 font-semibold truncate'>Earnings</th>
+                <th className='px-6 py-4 font-semibold truncate'>Students</th>
+                <th className='px-6 py-4 font-semibold truncate'>Published On</th>
               </tr>
             </thead>
             
-            <tbody className="text-sm text-gray-500">
-  {courses.map((course) => (
-    <tr key={course._id} className="border-b border-gray-500/20">
-      <td className="md:px-4 pl-2 md:pl-4 py-3 flex items-center space-x-3 truncate">
-        <img
-          src={course.courseThumbnail}
-          alt="Course Image"
-          className="w-16"
-        />
-        <span className="truncate hidden md:block">
-          {course.courseTitle}
-        </span>
-      </td>
-      <td className="px-4 py-3">
-        {currency}
-        {Math.floor(
-          course.enrolledStudents.length *
-            (course.coursePrice - course.discount * course.coursePrice / 100)
-        )}
-      </td>
-      <td className="px-4 py-3">{course.enrolledStudents.length}</td>
-      <td className="px-4 py-3">
-        {new Date(course.createdAt).toLocaleDateString()}
-      </td>
-    </tr>
-  ))}
-</tbody>
-
+            <tbody className="text-purple-700 text-sm">
+              {courses.map((course) => (
+                <tr
+                  key={course._id}
+                  className="border-b border-purple-200 hover:bg-purple-50 transition-colors duration-200"
+                >
+                  <td className="px-6 py-4 flex items-center space-x-4 truncate">
+                    <img
+                      src={course.courseThumbnail}
+                      alt="Course Image"
+                      className="w-16 h-10 rounded-md object-cover border border-purple-300"
+                    />
+                    <span className="truncate hidden md:block font-medium">{course.courseTitle}</span>
+                  </td>
+                  <td className="px-6 py-4 font-semibold">
+                    {currency}
+                    {Math.floor(
+                      course.enrolledStudents.length *
+                      (course.coursePrice - (course.discount * course.coursePrice) / 100)
+                    )}
+                  </td>
+                  <td className="px-6 py-4">{course.enrolledStudents.length}</td>
+                  <td className="px-6 py-4">
+                    {new Date(course.createdAt).toLocaleDateString()}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </table>
         </div>
       </div>
