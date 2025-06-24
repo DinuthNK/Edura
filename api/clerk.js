@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
-import connectDB from "../configs/mongodb";
-import User from "../models/User";
+import connectDB from "../backend/configs/mongodb";
+import User from "../backend/models/User";
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
