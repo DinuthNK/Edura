@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import mongoose from "mongoose";
 
-// Define your User schema inline or import it if possible
+// Define User schema inline for serverless
 const userSchema = new mongoose.Schema(
   {
     _id: { type: String, required: true },
