@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import connectDB from './configs/mongodb.js';
 import 'dotenv/config'; 
+import clerkRoutes from './routes/clerkRoutes.js';
 
 // Initialize express
 const app = express();
@@ -11,9 +12,12 @@ await connectDB();
 
 // Middlewares
 app.use(cors());
+app.use(express.json())
+
 
 // Routes
 app.get('/', (req, res) => res.send("API Working"));
+app.use('/clerk', clerkRoutes)
 
 // Start server
 const PORT = process.env.PORT || 5000
