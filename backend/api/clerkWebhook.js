@@ -1,6 +1,6 @@
 import { Webhook } from "svix";
-import User from "./models/User.js"; // adjust path if needed
-import connectDB from "./configs/mongoDB.js"; // adjust if in different location
+import User from './models/User.js'; // adjust path if needed
+import connectDB from './configs/mongodb.js'; // adjust if in different location
 
 export const config = {
   api: {
