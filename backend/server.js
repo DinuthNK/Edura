@@ -9,7 +9,7 @@ dotenv.config();
 
 const app = express();
 
-// Middleware for Clerk webhook (raw body)
+// Middleware for Clerk webhook - raw body for verification
 app.use('/api/clerkWebhook', async (req, res, next) => {
   try {
     req.rawBody = await getRawBody(req);
@@ -20,7 +20,7 @@ app.use('/api/clerkWebhook', async (req, res, next) => {
   }
 });
 
-// Standard middleware
+// Normal middlewares for all other routes (including parsing JSON)
 app.use(cors());
 app.use(express.json());
 
@@ -32,7 +32,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api', clerkRoutes);
 
-// Connect and start
+// Connect and start server
 const PORT = process.env.PORT || 5000;
 
 const startServer = async () => {
