@@ -12,12 +12,13 @@ await connectDB();
 
 // Middlewares
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 
 
 // Routes
 app.get('/', (req, res) => res.send("API Working"));
-app.use('/clerk', clerkRoutes)
+
+app.use('/clerk', clerkRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5000

@@ -1,34 +1,41 @@
+// backend/routes/clerkRoutes.js
 import express from 'express';
 import User from '../models/User.js';
 
 const router = express.Router();
 
-// Clerk Webhook Handler
+// Route to handle incoming Clerk webhook
 router.post('/', async (req, res) => {
   try {
-    const { object, type, data } = req.body;
+    const { id, email_addresses, image_url, first_name, last_name } = req.body;
 
-    // Handle user.created event from Clerk
-    if (object === 'event' && type === 'user.created') {
-      const userData = data;
-
-      const newUser = new User({
-        _id: userData.id,
-        name: `${userData.first_name} ${userData.last_name}`,
-        email: userData.email_addresses[0].email_address,
-        imageUrl: userData.image_url,
-        enrolledCourses: [],
-      });
-
-      await newUser.save();
-      console.log('✅ Clerk user saved to MongoDB:', newUser);
-      return res.status(201).json({ message: 'User created' });
+    // Validate required fields from Clerk
+    const email = email_addresses?.[0]?.email_address;
+    if (!id || !email) {
+      return res.status(400).json({ error: 'Missing required Clerk user data' });
     }
 
-    res.status(200).json({ message: 'No action taken' });
+    // Check if user already exists
+    const existingUser = await User.findById(id);
+    if (existingUser) {
+      return res.status(200).json({ message: 'User already exists' });
+    }
+
+    // Create new user document
+    const newUser = new User({
+      _id: id,
+      name: `${first_name || ''} ${last_name || ''}`.trim(),
+      email,
+      imageUrl: image_url,
+    });
+
+    // Save user to database
+    await newUser.save();
+    res.status(201).json({ message: 'User saved to MongoDB' });
+
   } catch (error) {
-    console.error('❌ Error in Clerk webhook:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error saving Clerk user:', error.message);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
