@@ -1,8 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import connectDB from '../configs/mongodb.js';
+import connectDB from './configs/mongodb.js';
 import 'dotenv/config'; 
-import clerkRoutes from '../routes/clerkRoutes.js';
+import clerkRoutes from './routes/clerkRoutes.js';
 
 const app = express();
 
