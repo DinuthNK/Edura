@@ -15,7 +15,7 @@ export const clerkWebhooks = async (req, res) => {
         })
         const {data, type}= req.body
         switch (type) {
-            case 'user.created' :{
+            case 'user.created': {
                 const userData = {
                     _id: data.id,
                     email: data.email_addresses[0].email_address,
