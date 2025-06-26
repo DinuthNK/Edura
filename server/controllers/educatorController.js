@@ -5,7 +5,7 @@ import { Purchase } from '../models/Purchase.js'
 import User from '../models/User.js'
 
 
-// update roleto educator
+// update role to educator
 export const updateRoleToEducator = async (req, res)=>{
     try {
         const userId = req.auth.userId
