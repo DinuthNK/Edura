@@ -13,7 +13,7 @@ export const AppContextProvider = ({ children }) => {
   const {user}  = useUser()
 
   const [allCourses, setAllCourses] = useState([]);
-  const [isEducator, setIsEducator] = useState(false);
+  const [isEducator, setIsEducator] = useState(true);
   const [enrolledCourses, setEnrolledCourses] = useState([]);
 
 
@@ -75,19 +75,11 @@ const fetchUserEnrolledCourses = async () => {
     console.log(await getToken());
   } 
 
-  useEffect(() => {
-    if (user) {
-      logToken();
-  
-      const role = user.publicMetadata?.role;
-      if (role === 'educator') {
-        setIsEducator(true);
-      } else {
-        setIsEducator(false);
+  useEffect(()=>{
+      if(user){
+          logToken()
       }
-    }
-  }, [user]);
-  
+  },[user])
 
   const value = {
     currency,

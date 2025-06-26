@@ -1,7 +1,7 @@
 import {clerkClient}from '@clerk/express'
 
 // update roleto educator
-export const updateRoleToEducator = async (req, res)=>{
+export const updateRoleToEducator = async (req,res)=>{
     try {
         const userId = req.auth.userId
 
@@ -11,7 +11,7 @@ export const updateRoleToEducator = async (req, res)=>{
             }
         })
 
-        res.json({success: true, message: 'You can publish a course now'})
+        res.json({ success: true, message: 'You can publish a course now' })
 
     } catch (error) {
        res.json({success: false, message: error.message}) 
