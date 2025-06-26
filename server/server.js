@@ -6,6 +6,7 @@ import { clerkWebhooks } from './controllers/webhooks.js'
 import educatorRouter from './routes/educatorRoutes.js'
 import { clerkMiddleware } from '@clerk/express'
 import connectCloudinary from './configs/cloudinary.js'
+import courseRouter from './routes/courseRoute.js'
 
 
 //initalize express
@@ -25,6 +26,7 @@ app.get('/', (req, res)=> res.send("API Working"))
 app.post('/clerk', express.json(), clerkWebhooks)
 app.use(express.json()); // globally handle JSON
 app.use('/api/educator', educatorRouter); // multer works fine
+app.use('/api/course', express.json(), courseRouter);
 
 //port
 const PORT = process.env.PORT || 5000;
