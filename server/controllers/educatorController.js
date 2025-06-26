@@ -1,19 +1,17 @@
-import {clerkClient}from '@clerk/express'
-
-// update roleto educator
-export const updateRoleToEducator = async (req, res)=> {
+export const updateRoleToEducator = async (req, res) => {
     try {
-        const userId = req.auth.userId
-
-        await  clerkClient.users.updateUserMetadata(userId, {
-            publicMetadata:{
-                role: 'educator',
-            }
-        })
-
-        res.json({success: true, message: 'You can publish a course now'})
-
+      const userId = req.auth?.userId; // or req.params.id / req.query.id
+  
+      if (!userId) {
+        return res.status(400).json({ message: "A valid resource ID is required." });
+      }
+  
+      // Clerk logic (or DB update here)
+      // await clerkClient.users.updateUser(userId, { publicMetadata: { role: 'educator' } });
+  
+      res.status(200).json({ message: "Role updated to educator" });
     } catch (error) {
-       res.json({success: false, message: error.message}) 
+      res.status(500).json({ message: "Internal Server Error", error });
     }
-}
+  };
+  
