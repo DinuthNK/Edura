@@ -2,6 +2,7 @@ import { clerkClient} from '@clerk/express'
 import Course from '../models/Course.js'
 import {v2 as cloudinary} from 'cloudinary'
 import { Purchase } from '../models/Purchase.js'
+import User from '../models/User.js'
 
 
 // update roleto educator
@@ -84,10 +85,10 @@ export const educatorDashboardData = async(req, res)=>{
         const enrolledStudentsData = [];
         for(const course of courses){
             const students = await User.find({
-                _id: {$in: CSSUnparsedValue.enrolledStudents}
+                _id: {$in: course.enrolledStudents}
             }, 'name imageUrl');
 
-            students.array.forEach(student => {
+            students.forEach(student => {
                 enrolledStudentsData.push({
                     courseTitle: course.courseTitle,
                     student
@@ -123,7 +124,7 @@ export const getEnrolledStudentsData = async (req, res)=>{
                 purchasedate: purchase.createdAt
             }));
 
-            req.json({success: true, enrolledStudents})
+            res.json({success: true, enrolledStudents})
 
         } catch (error) {
             res.json({success: false, message: error.message});
