@@ -4,7 +4,7 @@ import {v2 as cloudinary} from 'cloudinary'
 
 
 // update roleto educator
-export const updateRoleToEducator = async (req,res)=>{
+export const updateRoleToEducator = async (req, res)=>{
     try {
         const userId = req.auth.userId
 
@@ -23,7 +23,7 @@ export const updateRoleToEducator = async (req,res)=>{
 
 //AddNew Coourse
 
-export const addCourse  =  async (req,res)=>{
+export const addCourse  =  async (req, res)=>{
     try {
         const {courseData} = req.body
         const imageFile = req.file
@@ -44,5 +44,17 @@ export const addCourse  =  async (req,res)=>{
 
     } catch (error) {
         res.json({success: false, message: error.message})
+    }
+}
+
+// Get educator courses
+
+export const getEducatorCourses = async (req, res)=>{
+    try {
+        const educator = req.auth.userId
+        const courses= await Course.find({educator})
+        res.json({success: true, courses})
+    } catch (error) {
+        res.json({success: false, message: error.message })
     }
 }
