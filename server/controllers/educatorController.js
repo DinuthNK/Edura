@@ -78,7 +78,7 @@ export const educatorDashboardData = async(req, res)=>{
             status: 'completed'
         });
 
-        const totalEarnings = purchases.reduce((sum, Purchase)=> sum + Purchase.amount, 0);
+        const totalEarnings = purchases.reduce((sum, purchase)=> sum + purchase.amount, 0);
 
 
         // collect inique enrolled student ids with their course titles
