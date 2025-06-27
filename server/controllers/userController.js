@@ -3,11 +3,11 @@ import User from "../models/User.js"
 import { Purchase } from "../models/Purchase.js";
 import Stripe from "stripe";
 import Course from "../models/Course.js";
-
+import mongoose from 'mongoose'; 
 //get user Data
 export const getUserData = async (req, res)=>{
     try {
-        const userId = req.auth.userId
+        const { userId } = req.auth();
         const user = await User.findById(userId)
 
         if(!user){
@@ -25,7 +25,7 @@ export const getUserData = async (req, res)=>{
 
 export const userEnrolledCourses = async (req, res)=>{
     try {
-        const userId = req.auth.userId
+        const { userId } = req.auth();
         const userData = await User.findById(userId).populate('enrolledCourses')
 
         res.json({success: true, enrolledCourses: userData.enrolledCourses})
@@ -38,9 +38,9 @@ export const purchaseCourse = async (req, res)=>{
     try {
         const {courseId} = req.body
         const {origin}  = req.headers
-        const userId = req.auth.userId
+        const { userId } = req.auth();
         const userData = await User.findById(userId)
-        const courseData = await Course.findById(courseId)
+        const courseData = await Course.findById(new mongoose.Types.ObjectId(courseId));
 
         if(!userData || !courseData){
             return res.json({success: false, message: 'Data Not Found'})
