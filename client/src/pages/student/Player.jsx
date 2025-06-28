@@ -8,6 +8,7 @@ import Footer from '../../components/student/Footer'
 import Rating from '../../components/student/Rating'
 import { toast } from 'react-toastify'
 import Loading from '../../components/student/Loading'
+import axios from 'axios'
 
 const Player = () => {
 
@@ -26,7 +27,7 @@ const Player = () => {
     enrolledCourses.map((course)=>{
         if(course._id === courseId){
           setCourseData(course)
-          course.courseRatings.map(()=>{
+          course.courseRatings.map((item)=>{
             if(item.userId === userData._id){
               setInitialRating(item.rating)
             }
@@ -136,7 +137,9 @@ const toggleSection = (index)=>{
                       <div className='flex gap-2'>
                         {lecture.lectureUrl && <p 
                          onClick={()=> setPlayerData({
-                          ...lecture,chapter: index +1,lecture: i+1
+                          ...lecture,
+                          chapter: index + 1,
+                          lecture: i + 1
                          })} 
                          className='text-blue-500 cursor-pointer'>Watch</p>}
                         <p>{humanizeDuration(lecture.lectureDuration * 60 * 1000,{units: ['h','m']})}</p>

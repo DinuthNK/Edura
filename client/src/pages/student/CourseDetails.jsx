@@ -127,7 +127,7 @@ const CourseDetails = () => {
 
     <div className='pt-5'>
     {courseData.courseContent.map((chapter,index)=> (
-    <div key={index} className='border border-gray-300bg-white mb-2 rounded'>
+    <div key={index} className='border border-gray-300 bg-white mb-2 rounded'>
       <div className='flex items-center justify-between px-4 py-3 cursor-pointer select-none' 
       onClick={()=> toggleSection(index)}>
         <div className='flex item-center gap-2'>
