@@ -9,6 +9,7 @@ import { toast } from 'react-toastify';
 const Navbar = () => {
 
   const {navigate,isEducator, backendUrl, setIsEducator, getToken } = useContext(AppContext)
+  
   const location = useLocation();
   const isCourseListPage = location.pathname.includes('/course-list');
 
