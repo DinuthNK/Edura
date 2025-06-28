@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React, { useContext } from 'react'; 
 import { AppContext } from '../../context/AppContext'
 import { Link } from 'react-router-dom'
 import { assets } from '../../assets/assets'
 
 const CourseCard = ({ course }) => {
   const { currency, calculateRating } = useContext(AppContext);
-const rating = calculateRating(course);
 
   return (
     <Link 
@@ -17,15 +16,15 @@ const rating = calculateRating(course);
 
       <div className='p-3 text-left'>
         <h3 className='text-base font-semibold'>{course.courseTitle}</h3>
-        <p className='text-gray-500'>Dinuth Nadeepa</p>
+        <p className='text-gray-500'>{course.educator.name}</p>
 
         <div className='flex items-center space-x-2'>
-          <p>{rating.toFixed(1)}</p> {/* show 1 decimal */}
+          <p>{calculateRating(course)}</p>
           <div className='flex'>
-            {[...Array(5)].map((_, i) => (
+            {[...Array(5)].map((_, i)=>(
               <img 
                 key={i} 
-                src={i < Math.round(rating) ? assets.star : assets.star_blank} 
+                src={i < Math.floor(calculateRating(course)) ? assets.star : assets.star_blank} 
                 alt='' 
                 className='w-3.5 h-3.5' 
               />

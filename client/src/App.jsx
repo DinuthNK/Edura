@@ -1,8 +1,8 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useMatch } from 'react-router-dom';
 import Home from './pages/student/Home';
 import CoursesList from './pages/student/CoursesList';
-import CourseDeatials from './pages/student/CourseDetails';
+import CourseDetails from './pages/student/CourseDetails';
 import MyEnrollments from './pages/student/MyEnrollments';
 import Player from './pages/student/Player';
 import Loading from './components/student/Loading';
@@ -14,17 +14,19 @@ import StudentEnrolled from './pages/educator/StudentsEnrolled';
 import Navbar from './components/student/Navbar';
 import { Outlet } from 'react-router-dom';
 import "quill/dist/quill.snow.css";
-
+import { ToastContainer, toast } from 'react-toastify';
 const App = () => {
+
+  const isEducatorRouter = useMatch('/educator/*')
   return (
     <div className='text-default min-h-screen bg-white'>
-      <Navbar />
+      <ToastContainer />
+      {!isEducatorRouter && <Navbar/>}
       <Routes>
-        {/* Student Routes */}
         <Route path='/' element={<Home />} />
         <Route path='/course-list' element={<CoursesList />} />
         <Route path='/course-list/:input' element={<CoursesList />} />
-        <Route path='/course/:id' element={<CourseDeatials />} />
+        <Route path='/course/:id' element={<CourseDetails />} />
         <Route path='/my-enrollments' element={<MyEnrollments />} />
         <Route path='/player/:courseId' element={<Player />} />
         <Route path='/loading/:path' element={<Loading />} />
