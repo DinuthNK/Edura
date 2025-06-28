@@ -25,7 +25,7 @@ export const AppContextProvider = ({ children }) => {
 
   // Fetch all courses
 
-  const fetchAllCourses = async () => {
+  const fetchAllCourses = async ()=>{
     try {
        const {data} = await axios.get(backendUrl + '/api/course/all');
 
