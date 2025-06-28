@@ -1,5 +1,4 @@
 import { createContext, useState, useEffect } from "react";
-import { dummyCourses } from "../assets/assets"; 
 import { useNavigate } from "react-router-dom";
 import humanizeDuration from "humanize-duration";
 import { useAuth, useUser } from "@clerk/clerk-react";
@@ -8,12 +7,12 @@ import { toast } from "react-toastify";
 
 export const AppContext = createContext();
 
-export const AppContextProvider = ({ children }) => {
+export const AppContextProvider = (props) => {
   
   const backendUrl = import.meta.env.VITE_BACKEND_URL
 
   const currency = import.meta.env.VITE_CURRENCY
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const {getToken} = useAuth()
   const {user}  = useUser()
@@ -124,8 +123,8 @@ const fetchUserEnrolledCourses = async () => {
 
 
   useEffect(() => {
-    fetchAllCourses();
-  }, []);
+    fetchAllCourses()
+  }, [])
 
 
   useEffect(()=>{
@@ -153,11 +152,11 @@ const fetchUserEnrolledCourses = async () => {
     setUserData,
     getToken,
     fetchAllCourses
-  };
+  }
 
   return (
     <AppContext.Provider value={value}>
-      {children}
+      {props.children}
     </AppContext.Provider>
   );
 };

@@ -2,23 +2,37 @@ import React, { useContext, useEffect, useState } from 'react';
 import { assets, dummyDashboardData } from '../../assets/assets'; 
 import Loading from '../../components/student/Loading'; 
 import { AppContext } from '../../context/AppContext'; 
+import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const Dashboard = () => {
-  // Get currency symbol from context (e.g., "$", "₹")
-  const { currency } = useContext(AppContext);
 
-  // State to store dashboard statistics and student data
+  const { currency, backendUrl, isEducator, getToken } = useContext(AppContext);
   const [dashboardData, setDashboardData] = useState(null);
 
   // Simulate fetching dashboard data (replace with API call in production)
   const fetchDashboardData = async () => {
-    setDashboardData(dummyDashboardData);
+    try {
+      const token = await getToken()
+      const {data} = await axios.get(backendUrl + '/api/educator/dashboard',
+      {headers: {Authorization: `Bearer ${token}`}} )
+
+      if(data.success){
+        setDashboardData(data.dashboardData)
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
   };
 
-  // Fetch dashboard data when the component mounts
   useEffect(() => {
+    if(isEducator){
+      fetchDashboardData()
+    }
     fetchDashboardData();
-  }, []);
+  }, [isEducator]);
 
   // If data is loading, show loading spinner
   if (!dashboardData) return <Loading />;

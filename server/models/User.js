@@ -6,12 +6,7 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     imageUrl: { type: String, default: "" },
-    enrolledCourses: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Course",
-      },
-    ],
+    enrolledCourses: [{type: mongoose.Schema.Types.ObjectId,ref: 'Course' }],
   },
   { timestamps: true}
 );

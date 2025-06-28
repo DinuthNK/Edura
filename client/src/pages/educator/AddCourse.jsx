@@ -1,16 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import uniqid from 'uniqid';
 import Quill from 'quill';
 import { assets } from '../../assets/assets';
-
+import { AppContext } from '../../context/AppContext';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 const AddCourse = () => {
+
+  const {backendUrl,getToken} = useContext(AppContext)
   const quillRef = useRef(null);
   const editorRef = useRef(null);
 
   const [courseTitle, setCourseTitle] = useState('');
   const [coursePrice, setCoursePrice] = useState(0);
   const [discount, setDiscount] = useState(0);
-  const [Image, setImage] = useState(null);
+  const [image, setImage] = useState(null);
   const [chapters, setChapter] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [currentChapterId, setCurrentChapterId] = useState(null);
@@ -88,7 +92,7 @@ const AddCourse = () => {
     setShowPopup(false);
   };
   const addLecture = () => {
-    setChapters(
+    setChapter(
       chapters.map((chapter) => {
         if (chapter.chapterId === currentChapterId) {
           const newLecture = {
@@ -111,8 +115,45 @@ const AddCourse = () => {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-  }
+    try {
+      e.preventDefault()
+      if(!image){
+        toast.error('Please Select Thumbnail')
+      }
+
+      const courseData = {
+        courseTitle,
+        courseDescription: quillRef.current.root.innerHTML,
+        coursePrice:Number(coursePrice),
+        discount: Number(discount),
+        courseContent: chapters,
+      }
+
+      const formData = new FormData()
+      formData.append('courseData', JSON.stringify(courseData))
+      formData.append('image', image)
+
+      const token = await getToken()
+      const {data} = await axios.post(backendUrl + '/api/educator/add-course',
+      formData, {headers:{ Authorization: `Bearer ${token}`}})
+
+      if (data.success){
+        toast.success(data.message)
+        setCourseTitle('')
+        setCoursePrice(0)
+        setDiscount(0)
+        setImage(null)
+        setChapter([])
+        quillRef.current.root.innerHTML = ""
+
+      } else {
+        toast.error(data.message)
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+    
+  };
 
   useEffect(() => {
     if (!quillRef.current && editorRef.current) {
@@ -165,7 +206,7 @@ const AddCourse = () => {
                 accept='image/*'
                 hidden
               />
-              <img className='max-h-10' src={Image ? URL.createObjectURL(Image) : ''} alt='' />
+             <img className='max-h-10' src={image ? URL.createObjectURL(image) : ''} alt='' />
             </label>
           </div>
         </div>
@@ -306,7 +347,7 @@ const AddCourse = () => {
                 <button
                   type='button'
                   className='w-full bg-purple-400 text-white px-4 py-2 rounded'
-                  onClick={handleAddLecture}
+                  onClick={addLecture}
                 >
                   Add
                 </button>
