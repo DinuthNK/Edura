@@ -3,6 +3,7 @@ import { addCourse, educatorDashboardData, getEducatorCourses, getEnrolledStuden
 import upload from '../configs/multer.js';
 import { protectEducator } from '../middlewares/temp.js';
 
+
 const educatorRouter = express.Router()
 
 // Add Educator Role 
