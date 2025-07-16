@@ -1,78 +1,72 @@
-
+import Course from "../models/Course.js"
+import { CourseProgress } from "../models/CourseProgress.js"
+import { Purchase } from "../models/Purchase.js"
 import User from "../models/User.js"
-import { Purchase } from "../models/Purchase.js";
-import Stripe from "stripe";
-import Course from "../models/Course.js";
-import mongoose from 'mongoose'; 
-import { CourseProgress } from "../models/CourseProgress.js";
-//get user Data
+import stripe from "stripe"
 
-export const getUserData = async (req, res)=>{
+
+
+// Get User Data
+export const getUserData = async (req, res) => {
     try {
-        const userId = req.auth.userId;
+
+        const userId = req.auth.userId
+
         const user = await User.findById(userId)
 
-        if(!user){
-            return res.json({success: false, message: 'User not Found'})  
+        if (!user) {
+            return res.json({ success: false, message: 'User Not Found' })
         }
 
-        res.json({ success: true,user})
+        res.json({ success: true, user })
+
     } catch (error) {
-        res.json({ success: false, message: error.message})
+        res.json({ success: false, message: error.message })
     }
 }
 
+// Purchase Course 
+export const purchaseCourse = async (req, res) => {
 
-// uSer enrolled courses with lectyre link
-
-export const userEnrolledCourses = async (req, res)=>{
     try {
-        const userId = req.auth.userId;
-        const userData = await User.findById(userId).populate('enrolledCourses')
 
-        res.json({success: true, enrolledCourses: userData.enrolledCourses})
-    } catch (error) {
-        res.json({ success: false, message: error.message})
-    }
-}
-//PurchaseCourse
-export const purchaseCourse = async (req, res)=>{
-    try {
-        const {courseId} = req.body
-        const {origin}  = req.headers
-        const { userId } = req.auth();
+        const { courseId } = req.body
+        const { origin } = req.headers
+
+
+        const userId = req.auth.userId
+
+        const courseData = await Course.findById(courseId)
         const userData = await User.findById(userId)
-        const courseData = await Course.findById(new mongoose.Types.ObjectId(courseId));
 
-        if(!userData || !courseData){
-            return res.json({success: false, message: 'Data Not Found'})
+        if (!userData || !courseData) {
+            return res.json({ success: false, message: 'Data Not Found' })
         }
 
         const purchaseData = {
             courseId: courseData._id,
             userId,
-            amount: (courseData.coursePrice - courseData.discount * courseData.coursePrice / 100).toFixed(2), 
+            amount: (courseData.coursePrice - courseData.discount * courseData.coursePrice / 100).toFixed(2),
         }
+
         const newPurchase = await Purchase.create(purchaseData)
 
-        //stripe getway initilize
+        // Stripe Gateway Initialize
+        const stripeInstance = new stripe(process.env.STRIPE_SECRET_KEY)
 
-        const stripeInstance = new Stripe(process.env.STRIPE_SECRET_KEY)
-        const currency = process.env.CURRENCY.toLowerCase()
+        const currency = process.env.CURRENCY.toLocaleLowerCase()
 
-        // creating line items to for stripe
-
+        // Creating line items to for Stripe
         const line_items = [{
-            price_data:{
+            price_data: {
                 currency,
                 product_data: {
                     name: courseData.courseTitle
                 },
-                unit_amount: Math.floor(newPurchase.amount) * 100 
+                unit_amount: Math.floor(newPurchase.amount) * 100
             },
             quantity: 1
         }]
-
 
         const session = await stripeInstance.checkout.sessions.create({
             success_url: `${origin}/loading/my-enrollments`,
@@ -84,90 +78,129 @@ export const purchaseCourse = async (req, res)=>{
             }
         })
 
-        res.json({success: true, session_url: session.url})
+        res.json({ success: true, session_url: session.url });
+
 
     } catch (error) {
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message });
     }
-}  
+}
 
-//update user course progress
+// Users Enrolled Courses With Lecture Links
+export const userEnrolledCourses = async (req, res) => {
 
-export const updateUserCourseProgress = async (req, res)=>{
     try {
-        const userId = req.auth.userId;
-        const  {courseId, lectureId} = req.body
-        const progressData = await CourseProgress.findOne({userId, courseId})
 
-        if(progressData){
-            if(progressData.lectureCompleted.includes(lectureId)) {
-                return res.json({success: true, message: 'Lecture Already Completed'})
+        const userId = req.auth.userId
+
+        const userData = await User.findById(userId)
+            .populate('enrolledCourses')
+
+        res.json({ success: true, enrolledCourses: userData.enrolledCourses })
+
+    } catch (error) {
+        res.json({ success: false, message: error.message })
+    }
+
+}
+
+// Update User Course Progress
+export const updateUserCourseProgress = async (req, res) => {
+
+    try {
+
+        const userId = req.auth.userId
+
+        const { courseId, lectureId } = req.body
+
+        const progressData = await CourseProgress.findOne({ userId, courseId })
+
+        if (progressData) {
+
+            if (progressData.lectureCompleted.includes(lectureId)) {
+                return res.json({ success: true, message: 'Lecture Already Completed' })
             }
 
             progressData.lectureCompleted.push(lectureId)
             await progressData.save()
-        } else{
+
+        } else {
+
             await CourseProgress.create({
                 userId,
                 courseId,
                 lectureCompleted: [lectureId]
             })
+
         }
 
-        res.json({success: true, message: 'Progress Updated'})
+        res.json({ success: true, message: 'Progress Updated' })
+
     } catch (error) {
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message })
     }
+
 }
 
-// get user course progress
+// get User Course Progress
+export const getUserCourseProgress = async (req, res) => {
 
-export const getUserCourseProgress = async (req, res) =>{
     try {
-        const userId = req.auth.userId;
-        const  {courseId} = req.body
-        const progressData = await CourseProgress.findOne({userId, courseId})
-        res.json({success: true, progressData})
+
+        const userId = req.auth.userId
+
+        const { courseId } = req.body
+
+        const progressData = await CourseProgress.findOne({ userId, courseId })
+
+        res.json({ success: true, progressData })
+
     } catch (error) {
-        res.json({success: false, message: error.message});
+        res.json({ success: false, message: error.message })
     }
+
 }
 
-//Add User ratings  to course
+// Add User Ratings to Course
+export const addUserRating = async (req, res) => {
 
-export const addUserRating  = async (req, res)=>{
     const userId = req.auth.userId;
-    const {courseId, rating} = req.body;
+    const { courseId, rating } = req.body;
 
-    if(!courseId || !userId || !rating || rating < 1 || rating > 5){
-       return res.json({success: false, message: 'Invalid Details'});
+    // Validate inputs
+    if (!courseId || !userId || !rating || rating < 1 || rating > 5) {
+        return res.json({ success: false, message: 'InValid Details' });
     }
 
     try {
+        // Find the course by ID
         const course = await Course.findById(courseId);
 
-        if(!course){
-           return res.json({success: false, message: 'Course not found.'});
+        if (!course) {
+            return res.json({ success: false, message: 'Course not found.' });
         }
 
-        const user = await User.findById(userId)
+        const user = await User.findById(userId);
 
-        if(!user || user.enrolledCourses.includes(courseId)){
-           return res.json({success: false, message: 'User has not purchased this course'});
-     } 
-     
-     const existingRatingIndex = course.courseRatings.findIndex(r=>r.userId === userId)
-     if(existingRatingIndex > -1){
-        course.courseRatings[existingRatingIndex].rating = rating;
-     }else {
+        if (!user || !user.enrolledCourses.includes(courseId)) {
+            return res.json({ success: false, message: 'User has not purchased this course.' });
+        }
 
-        course.courseRatings.push({userId, rating});
-     }
-     await course.save();
+        // Check is user already rated
+        const existingRatingIndex = course.courseRatings.findIndex(r => r.userId === userId);
 
-     return res.json({success: true, message: 'Rating added'})
+        if (existingRatingIndex > -1) {
+            // Update the existing rating
+            course.courseRatings[existingRatingIndex].rating = rating;
+        } else {
+            // Add a new rating
+            course.courseRatings.push({ userId, rating });
+        }
 
+        await course.save();
+
+        return res.json({ success: true, message: 'Rating added' });
     } catch (error) {
-       return res.json({success: false, message: error.message});
+        return res.json({ success: false, message: error.message });
     }
-}
+};
