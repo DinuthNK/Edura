@@ -252,7 +252,7 @@ const AddCourse = () => {
                     onChange={(e) => setLectureDetails({ ...lectureDetails, isPreviewFree: e.target.checked })}
                   />
                 </div>
-                <button type='button' className="w-full bg-blue-400 text-white px-4 py-2 rounded" onClick={addLecture}>Add</button>
+                <button type='button' className="w-full bg-purple-400 text-white px-4 py-2 rounded" onClick={addLecture}>Add</button>
                 <img onClick={() => setShowPopup(false)} src={assets.cross_icon} className='absolute top-4 right-4 w-4 cursor-pointer' alt="" />
               </div>
             </div>
