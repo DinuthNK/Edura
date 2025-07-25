@@ -8,12 +8,15 @@ import { clerkMiddleware } from '@clerk/express'
 import { clerkWebhooks, stripeWebhooks } from './controllers/webhooks.js'
 import educatorRouter from './routes/educatorRoutes.js'
 import courseRouter from './routes/courseRoute.js'
+import User from './models/User.js'
 
 // Initialize Express
 const app = express()
 
 // Connect to database
 await connectDB()
+
+console.log("User model connected to DB:", User.db.name);
 await connectCloudinary()
 
 // Middlewares
