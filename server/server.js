@@ -8,7 +8,7 @@ import { clerkMiddleware } from '@clerk/express'
 import { clerkWebhooks, stripeWebhooks } from './controllers/webhooks.js'
 import educatorRouter from './routes/educatorRoutes.js'
 import courseRouter from './routes/courseRoute.js'
-
+import webhookRoutes from './routes/webhookRoutes.js';
 // Initialize Express
 const app = express()
 
@@ -34,3 +34,10 @@ const PORT = process.env.PORT || 5000
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 })
+
+
+// Register webhook routes before json parsing
+app.use("/api/webhooks", webhookRoutes);
+
+// Then your other middlewares and routes
+app.use(express.json());

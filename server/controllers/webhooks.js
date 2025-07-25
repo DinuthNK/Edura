@@ -100,10 +100,17 @@ export const stripeWebhooks = async (request, response) => {
       const userData = await User.findById(purchaseData.userId)
       const courseData = await Course.findById(purchaseData.courseId.toString())
 
-      courseData.enrolledStudents.push(userData)
+      if (!courseData.enrolledStudents.includes(userData._id)) {
+        courseData.enrolledStudents.push(userData._id);
+        await courseData.save();
+      }
       await courseData.save()
 
-      userData.enrolledCourses.push(courseData._id)
+      if (!userData.enrolledCourses.includes(courseData._id)) {
+        userData.enrolledCourses.push(courseData._id);
+        await userData.save();
+      }
+      
       await userData.save()
 
       purchaseData.status = 'completed'
