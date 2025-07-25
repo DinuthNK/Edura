@@ -88,21 +88,23 @@ export const purchaseCourse = async (req, res) => {
 
 // Users Enrolled Courses With Lecture Links
 export const userEnrolledCourses = async (req, res) => {
-
     try {
-
-        const userId = req.auth.userId
-
-        const userData = await User.findById(userId)
-            .populate('enrolledCourses')
-
-        res.json({ success: true, enrolledCourses: userData.enrolledCourses })
-
+      const userId = req.auth.userId;
+  
+      // Find purchases made by this user
+      const purchases = await Purchase.find({ userId, status: 'completed' });
+  
+      const courseIds = purchases.map(p => p.courseId);
+  
+      // Get full course data
+      const courses = await Course.find({ _id: { $in: courseIds } });
+  
+      res.json({ success: true, enrolledCourses: courses });
     } catch (error) {
-        res.json({ success: false, message: error.message })
+      res.json({ success: false, message: error.message });
     }
-
-}
+  };
+  
 
 // Update User Course Progress
 export const updateUserCourseProgress = async (req, res) => {

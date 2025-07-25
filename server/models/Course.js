@@ -13,7 +13,7 @@ const chapterSchema = new mongoose.Schema({
     chapterId: { type: String, required: true },
     chapterOrder: { type: Number, required: true },
     chapterTitle: { type: String, required: true },
-    chapterContent: [lectureSchema] // Use the lecture schema here
+    chapterContent: [lectureSchema]
 }, { _id: false });
 
 const courseSchema = new mongoose.Schema({
@@ -23,21 +23,24 @@ const courseSchema = new mongoose.Schema({
     coursePrice: { type: Number, required: true },
     isPublished: { type: Boolean, default: true },
     discount: { type: Number, required: true, min: 0, max: 100 },
-    courseContent: [chapterSchema], // Use the chapter schema here
+    courseContent: [chapterSchema],
     educator: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,  // <-- Change here
         ref: 'User',
         required: true
     },
     courseRatings: [
         {
-            userId: { type: String },
+            userId: { 
+                type: mongoose.Schema.Types.ObjectId,  // <-- Change here
+                ref: 'User'
+            },
             rating: { type: Number, min: 1, max: 5 }
         }
     ],
     enrolledStudents: [
         {
-            type: String,
+            type: mongoose.Schema.Types.ObjectId,  // <-- Change here
             ref: 'User'
         }
     ],
