@@ -2,7 +2,9 @@ import React from 'react'
 import { Outlet } from 'react-router-dom'
 import Navbar from '../../components/educator/Navbar'
 import Footer from '../../components/educator/Footer'
-import Sidebar from '../../components/educator/Sidebar'
+import Sidebar from '../../components/educator/Sidebar';
+
+
 const Educator = () => {
     return (
         <div className="text-default min-h-screen bg-white">
