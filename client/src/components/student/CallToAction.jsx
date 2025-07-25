@@ -1,5 +1,6 @@
 import React from 'react'
 import { assets } from '../../assets/assets'
+import { Link } from 'react-router-dom';
 
 const CallToAction = () => {
   return (
@@ -9,7 +10,7 @@ const CallToAction = () => {
       on your own schedule. Whether you're starting a new career or improving your skills, 
       <br />Edura is here to support your journey — anytime, anywhere.</p>
       <div className='flex items-center font-medium gap-6 mt-4'>
-        <button className='px-10 py-3 rounded-md text-white bg-purple-600'>Get started</button>
+      <Link to={'/course-list'} onClick={() => scrollTo(0, 0)} className='px-10 py-3 rounded-md text-white bg-purple-600'>Get started</Link>
         <button className='flex items-center gap-2'>Learn more <img src={assets.arrow_icon} alt="arrow_icon" />  </button>
       </div>
 

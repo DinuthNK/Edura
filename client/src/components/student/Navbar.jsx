@@ -39,16 +39,16 @@ const Navbar = () => {
 
       
   return (
-    <div className={`h-16 flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-6 border-b border-black-20 py-6 ${isCourseListPage ? 'bg-white' : 'bg-purple-600/80'}`}>
+    <div className={`h-16 flex items-center justify-between px-4 sm:px-10 md:px-14 lg:px-6 border-b border-black-20 py-6 ${isCourseListPage ? 'bg-white' : 'bg-white-600/80'}`}>
        <img onClick={()=> navigate('/')} src={assets.logo3} alt="Logo"
        className="w-25 lg:w- cursor-pointer" />
-      <div className="hidden md:flex items-center gap-3 text-black-1000">
+      <div className="hidden md:flex items-center gap-3 text-white-1000">
         <div className="flex items-center gap-1">
           {user && (
             <>
               <button className="bg-gray-700 text-white px-5 py-2 rounded-full" onClick={becomeEducator}>{isEducator ? 'Educator Dashboard' : 'Become Educator'}
               </button>
-              <Link to='/my-enrollments' className="bg-gray-700 text-white px-5 py-2 rounded-full">My Enrollments</Link>
+              <Link to='/my-enrollments' className="bg-purple-700 text-white px-5 py-2 rounded-full">My Enrollments</Link>
             </>
           )}
         </div>

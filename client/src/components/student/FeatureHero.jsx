@@ -23,7 +23,7 @@ const FeatureHero = () => {
   };
 
   return (
-    <div className="relative w-full flex flex-col md:flex-row items-center justify-center bg-white py-14 px-6 md:px-24 gap-10">
+    <div className=" relative w-full flex flex-col md:flex-row items-center justify-center bg-white py-14 px-6 md:px-24 gap-10">
 
       {/* Text Section */}
       <div className="w-full md:w-1/2">

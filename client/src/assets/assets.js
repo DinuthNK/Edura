@@ -45,7 +45,7 @@ import profile_img from './profile_img.png'
 import profile_img2 from './profile_img2.png'
 import profile_img3 from './profile_img3.png'
 import lesson_icon from './lesson_icon.svg'
-
+import ime from './ime.png'
 
 export const assets = {
     logo3,
@@ -93,7 +93,8 @@ export const assets = {
     profile_img3,
     play_icon,
     blue_tick_icon,
-    lesson_icon
+    lesson_icon,
+    ime
 }
 
 export const dummyEducatorData = {
