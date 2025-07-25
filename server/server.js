@@ -23,10 +23,10 @@ app.use(clerkMiddleware())
 // Routes
 app.get('/', (req, res) => res.send("API Working"))
 app.post('/clerk', express.json() , clerkWebhooks)
+app.post('/stripe', express.raw({ type: 'application/json' }), stripeWebhooks)
 app.use('/api/educator', express.json(), educatorRouter)
 app.use('/api/course', express.json(), courseRouter)
 app.use('/api/user', express.json(), userRouter)
-app.post('/api/webhook/stripe', express.raw({ type: 'application/json' }), stripeWebhooks);
 
 // Port
 const PORT = process.env.PORT || 5000
